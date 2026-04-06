@@ -5,7 +5,7 @@ let u = config.dotfiles.username; in
 {
   imports = [
     ./hardware-configuration.nix
-  ] ++ lib.optional (config.dotfiles.hardwareModule != "")
+  ] ++ lib.optional (config.dotfiles.hardwareModule != null)
         nixos-hardware.nixosModules.${config.dotfiles.hardwareModule}
     ++ lib.optional config.dotfiles.hasNvidia
         ../../modules/system/nvidia.nix;
@@ -19,7 +19,9 @@ let u = config.dotfiles.username; in
 
   networking.hostName = config.dotfiles.hostname;
 
-  time.timeZone      = "Europe/London"; # timedatectl list-timezones
+  # Timezone set automatically by automatic-timezoned (geolocation).
+  # To pin a timezone instead: disable services.automatic-timezoned in base.nix
+  # and uncomment: time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_US.UTF-8";
 
   users.users.${u} = {

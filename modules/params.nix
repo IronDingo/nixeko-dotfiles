@@ -35,9 +35,19 @@
     };
 
     hardwareModule = lib.mkOption {
+      type        = lib.types.nullOr lib.types.str;
+      default     = null;
+      description = "nixos-hardware module name, or null for none";
+    };
+
+    gitName = lib.mkOption {
       type        = lib.types.str;
-      default     = "";
-      description = "nixos-hardware module name, or empty string for none";
+      description = "Git commit author name";
+    };
+
+    gitEmail = lib.mkOption {
+      type        = lib.types.str;
+      description = "Git commit author email";
     };
 
   };

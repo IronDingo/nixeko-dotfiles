@@ -32,7 +32,7 @@ ACTIVE=$(get_active)
 ALL_SERVICES=$(get_all_services)
 
 if [ -z "$ALL_SERVICES" ]; then
-  notify-send "VPN" "No VPN configs found.\nSee ~/Projects/nixeko/vpn/README.md"
+  notify-send "VPN" "No VPN configs found.\nSee ~/Projects/nixeko-dotfiles/vpn/README.md"
   exit 1
 fi
 

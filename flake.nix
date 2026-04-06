@@ -17,7 +17,7 @@
     homeFor = file: { config, ... }: {
       home-manager.useGlobalPkgs    = true;
       home-manager.useUserPackages  = true;
-      home-manager.extraSpecialArgs = { inherit (config.dotfiles) username; };
+      home-manager.extraSpecialArgs = { inherit (config.dotfiles) username gitName gitEmail; };
       home-manager.users.${config.dotfiles.username} = import file;
     };
 

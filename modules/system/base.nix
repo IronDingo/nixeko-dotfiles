@@ -21,8 +21,7 @@
     noto-fonts-emoji
   ];
 
-  # XDG portals — GTK portal for all profiles
-  # Hyprland-specific portal added in hosts/nixeko/default.nix
+  # XDG portals — GTK portal base; Hyprland portal added in hosts/default/default.nix
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];

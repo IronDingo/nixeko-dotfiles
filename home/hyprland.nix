@@ -12,9 +12,9 @@
         "waybar"
         "mako"
         "hypridle"
-        "tailscale up"
-        "gnome-keyring-daemon --start --components=secrets"
-        "swaybg -i ~/Projects/dotfiles/wallpapers/emerald-07.png -m fill"
+        # Wallpaper: managed by Stylix (hyprpaper). No swaybg needed.
+        # Tailscale: managed by systemd service. No exec-once needed.
+        # gnome-keyring: managed by PAM via services.gnome.gnome-keyring. No exec-once needed.
       ];
 
       input = {
@@ -164,7 +164,7 @@
       };
       background = [
         {
-          path         = "~/Projects/dotfiles/wallpapers/emerald-07.png";
+          path         = "${../wallpapers/emerald-07.png}";
           blur_passes  = 2;
           blur_size    = 6;
           brightness   = 0.6;

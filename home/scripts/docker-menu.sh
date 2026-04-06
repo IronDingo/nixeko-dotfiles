@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # docker-menu — compose service launcher via walker
-# Auto-discovers all docker-compose projects in ~/Projects/nixeko/docker/
+# Auto-discovers all docker-compose projects in ~/Projects/nixeko-dotfiles/docker/
 
-DOCKER_DIR="$HOME/Projects/nixeko/docker"
+DOCKER_DIR="$HOME/Projects/nixeko-dotfiles/docker"
 WALKER_CMD="walker --dmenu"
 
 # ── Discover compose projects ─────────────────────────────────────────────────

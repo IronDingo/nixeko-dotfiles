@@ -21,16 +21,14 @@
     executable = true;
   };
 
-  # Nautilus sidebar bookmarks — quick access to key locations
+  # Nautilus sidebar bookmarks
   home.file.".config/gtk-3.0/bookmarks".text = ''
-    file:///home/${username}/Projects/nixeko            ⚙ nixeko config
-    file:///home/${username}/Projects/nixeko/home        ⚙ home modules
-    file:///home/${username}/Projects/nixeko/modules     ⚙ system modules
-    file:///home/${username}/Projects/nixeko/docker      ⚙ docker services
-    file:///home/${username}/Projects/nixeko/wallpapers  ⚙ wallpapers
-    file:///home/${username}/Projects/nixeko/vpn         ⚙ vpn configs
-    file:///home/${username}/Documents                   Documents
-    file:///home/${username}/Downloads                   Downloads
-    file:///home/${username}/Syncthing-Master            Syncthing
+    file:///home/${username}/Projects/nixeko-dotfiles            ⚙ dotfiles config
+    file:///home/${username}/Projects/nixeko-dotfiles/home        ⚙ home modules
+    file:///home/${username}/Projects/nixeko-dotfiles/modules     ⚙ system modules
+    file:///home/${username}/Projects/nixeko-dotfiles/wallpapers  ⚙ wallpapers
+    file:///home/${username}/Documents                            Documents
+    file:///home/${username}/Downloads                            Downloads
+    file:///home/${username}/Syncthing-Master                     Syncthing
   '';
 }

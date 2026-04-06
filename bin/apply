@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # apply — rebuild and switch to this configuration
-# Usage: ./bin/apply
-
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Usage: ./bin/apply [host]
+#   host defaults to "default" if not specified
 
 set -euo pipefail
 
-echo "→ Rebuilding..."
-sudo nixos-rebuild switch --flake "${DOTFILES_DIR}#default"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+HOST="${1:-default}"
+
+echo "→ Rebuilding ${HOST}..."
+sudo nixos-rebuild switch --flake "${DOTFILES_DIR}#${HOST}"
 echo "✓ Done"

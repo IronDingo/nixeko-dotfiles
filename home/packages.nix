@@ -41,7 +41,7 @@
     docker-compose
 
     # Networking
-    openvpn
+    # openvpn installed at system level (modules/system/vpn.nix)
     tcpdump
     wget
     whois

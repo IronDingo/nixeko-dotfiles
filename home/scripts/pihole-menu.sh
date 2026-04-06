@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # pihole-menu — Pi-hole docker compose controller via walker
 
-PIHOLE_DIR="$HOME/Projects/nixeko/docker/pihole"
-SEARXNG_DIR="$HOME/Projects/nixeko/docker/searxng"
+PIHOLE_DIR="$HOME/Projects/nixeko-dotfiles/docker/pihole"
+SEARXNG_DIR="$HOME/Projects/nixeko-dotfiles/docker/searxng"
 
 is_running() {
   docker ps --format '{{.Names}}' 2>/dev/null | grep -q "^pihole$"

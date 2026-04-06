@@ -1,15 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, username, gitName, gitEmail, ... }:
 
 {
   # ── Git ───────────────────────────────────────────────────────────────────────
+  # Set dotfiles.gitName and dotfiles.gitEmail in hosts/default/params.nix
 
   programs.git = {
-    enable = true;
-    userName = "your-github-username";   # CHANGE ME
-    userEmail = "you@example.com";       # CHANGE ME
+    enable    = true;
+    userName  = gitName;
+    userEmail = gitEmail;
     extraConfig = {
-      init.defaultBranch = "main";
-      pull.rebase = true;
+      init.defaultBranch  = "main";
+      pull.rebase         = true;
       push.autoSetupRemote = true;
     };
   };
@@ -17,8 +18,8 @@
   # ── Bash ──────────────────────────────────────────────────────────────────────
 
   programs.bash = {
-    enable = true;
-    enableCompletion = true;
+    enable            = true;
+    enableCompletion  = true;
     shellAliases = {
       ls  = "eza --icons";
       ll  = "eza -la --icons";
@@ -29,14 +30,14 @@
     initExtra = ''
       eval "$(zoxide init bash)"
       eval "$(starship init bash)"
-      export PATH="$HOME/Projects/nixeko/bin:$HOME/.local/bin:$PATH"
+      export PATH="$HOME/.local/bin:$PATH"
     '';
   };
 
   # ── Starship ──────────────────────────────────────────────────────────────────
 
   programs.starship = {
-    enable = true;
+    enable                = true;
     enableBashIntegration = true;
     settings = {
       format = "$directory$git_branch$git_status$character";
@@ -46,7 +47,7 @@
       };
       directory = {
         truncation_length = 3;
-        style = "cyan bold";
+        style             = "cyan bold";
       };
       git_branch = {
         format = "[$symbol$branch]($style) ";
@@ -66,13 +67,13 @@
     enable = true;
     settings = {
       window = {
-        padding    = { x = 12; y = 12; };
+        padding     = { x = 12; y = 12; };
         decorations = "None";
-        opacity    = 0.95;
+        opacity     = 0.95;
       };
       font = {
         normal.family = "JetBrainsMono Nerd Font";
-        size = 13.0;
+        size          = 13.0;
       };
       cursor.style.shape = "Beam";
     };
@@ -80,7 +81,7 @@
 
   # ── Shell tools ───────────────────────────────────────────────────────────────
 
-  programs.fzf.enable    = true;
-  programs.zoxide.enable = true;
+  programs.fzf.enable     = true;
+  programs.zoxide.enable  = true;
   programs.lazygit.enable = true;
 }
