@@ -14,7 +14,7 @@
         "hypridle"
         "tailscale up"
         "gnome-keyring-daemon --start --components=secrets"
-        "swaybg -i ~/Projects/nixeko/wallpapers/emerald-07.png -m fill"
+        "swaybg -i ~/Projects/dotfiles/wallpapers/emerald-07.png -m fill"
       ];
 
       input = {
@@ -164,7 +164,7 @@
       };
       background = [
         {
-          path         = "~/Projects/nixeko/wallpapers/emerald-07.png";
+          path         = "~/Projects/dotfiles/wallpapers/emerald-07.png";
           blur_passes  = 2;
           blur_size    = 6;
           brightness   = 0.6;
