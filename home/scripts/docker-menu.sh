@@ -1,37 +1,26 @@
 #!/usr/bin/env bash
 # docker-menu — compose service launcher via walker
-# Auto-discovers all docker-compose projects in ~/Projects/nixeko-dotfiles/docker/
+# Set DOCKER_DIR env var to override the default location.
 
-DOCKER_DIR="$HOME/Projects/nixeko-dotfiles/docker"
+DOCKER_DIR="${DOCKER_DIR:-$HOME/docker}"
 WALKER_CMD="walker --dmenu"
 
 # ── Discover compose projects ─────────────────────────────────────────────────
+# Returns full paths to compose files (supports both .yml and .yaml).
+# Parentheses fix -o operator precedence in find.
 
-get_projects() {
-  find "$DOCKER_DIR" -name "docker-compose.yml" -o -name "docker-compose.yaml" 2>/dev/null \
-    | xargs -I{} dirname {} \
+get_compose_files() {
+  find "$DOCKER_DIR" \( -name "docker-compose.yml" -o -name "docker-compose.yaml" \) 2>/dev/null \
     | sort
-}
-
-# Get running containers for a project
-project_status() {
-  local dir="$1"
-  local name
-  name=$(basename "$dir")
-  local running
-  running=$(docker compose -f "$dir/docker-compose.yml" ps --services --filter status=running 2>/dev/null | wc -l)
-  local total
-  total=$(docker compose -f "$dir/docker-compose.yml" ps --services 2>/dev/null | wc -l)
-  echo "$running/$total"
 }
 
 # ── Build menu ────────────────────────────────────────────────────────────────
 
 build_menu() {
-  local projects
-  projects=$(get_projects)
+  local compose_files
+  compose_files=$(get_compose_files)
 
-  if [ -z "$projects" ]; then
+  if [ -z "$compose_files" ]; then
     notify-send "Docker" "No compose projects found in $DOCKER_DIR"
     exit 1
   fi
@@ -40,21 +29,19 @@ build_menu() {
   echo "↓  Stop all"
   echo "────────────────"
 
-  while IFS= read -r dir; do
-    local name status
+  while IFS= read -r compose_file; do
+    local dir name running total
+    dir=$(dirname "$compose_file")
     name=$(basename "$dir")
-    status=$(project_status "$dir")
-
-    # Check if anything is running
-    local running
-    running=$(docker compose -f "$dir/docker-compose.yml" ps --services --filter status=running 2>/dev/null | wc -l)
+    running=$(docker compose -f "$compose_file" ps --services --filter status=running 2>/dev/null | wc -l)
+    total=$(docker compose -f "$compose_file" ps --services 2>/dev/null | wc -l)
 
     if [ "$running" -gt 0 ]; then
-      echo "◉  ${name}  [${status} running]|stop|${dir}"
+      echo "◉  ${name}  [${running}/${total} running]|stop|${compose_file}"
     else
-      echo "○  ${name}  [stopped]|start|${dir}"
+      echo "○  ${name}  [stopped]|start|${compose_file}"
     fi
-  done <<< "$projects"
+  done <<< "$compose_files"
 
   echo "────────────────"
   echo "📋  lazydocker|lazy|"
@@ -66,20 +53,19 @@ MENU=$(build_menu)
 SELECTED=$(echo "$MENU" | $WALKER_CMD -p "Docker")
 [ -z "$SELECTED" ] && exit 0
 
-# Global actions
 case "$SELECTED" in
   "⟳  Restart all")
     notify-send "Docker" "Restarting all services..."
-    get_projects | while IFS= read -r dir; do
-      docker compose -f "$dir/docker-compose.yml" up -d 2>/dev/null
+    get_compose_files | while IFS= read -r f; do
+      docker compose -f "$f" up -d 2>/dev/null
     done
     notify-send "Docker" "All services restarted"
     exit 0
     ;;
   "↓  Stop all")
     notify-send "Docker" "Stopping all services..."
-    get_projects | while IFS= read -r dir; do
-      docker compose -f "$dir/docker-compose.yml" down 2>/dev/null
+    get_compose_files | while IFS= read -r f; do
+      docker compose -f "$f" down 2>/dev/null
     done
     notify-send "Docker" "All services stopped"
     exit 0
@@ -90,21 +76,20 @@ case "$SELECTED" in
     ;;
 esac
 
-# Per-project actions
 if [[ "$SELECTED" == *"|start|"* ]]; then
-  DIR="${SELECTED##*|start|}"
-  NAME=$(basename "$DIR")
+  COMPOSE_FILE="${SELECTED##*|start|}"
+  NAME=$(basename "$(dirname "$COMPOSE_FILE")")
   notify-send "Docker" "Starting ${NAME}..."
-  if docker compose -f "$DIR/docker-compose.yml" up -d 2>/dev/null; then
+  if docker compose -f "$COMPOSE_FILE" up -d 2>/dev/null; then
     notify-send "Docker" "${NAME} is up"
   else
-    notify-send "Docker Error" "${NAME} failed to start — check: docker compose -f $DIR/docker-compose.yml logs"
+    notify-send "Docker Error" "${NAME} failed — check: docker compose -f $COMPOSE_FILE logs"
   fi
 
 elif [[ "$SELECTED" == *"|stop|"* ]]; then
-  DIR="${SELECTED##*|stop|}"
-  NAME=$(basename "$DIR")
+  COMPOSE_FILE="${SELECTED##*|stop|}"
+  NAME=$(basename "$(dirname "$COMPOSE_FILE")")
   notify-send "Docker" "Stopping ${NAME}..."
-  docker compose -f "$DIR/docker-compose.yml" down 2>/dev/null
+  docker compose -f "$COMPOSE_FILE" down 2>/dev/null
   notify-send "Docker" "${NAME} stopped"
 fi

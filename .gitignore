@@ -1,0 +1,9 @@
+# VPN credentials — never commit these
+vpn/credentials
+
+# Hardware config is machine-specific — each user provides their own
+hosts/default/hardware-configuration.nix
+
+# Nix build outputs
+result
+result-*

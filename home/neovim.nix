@@ -15,7 +15,7 @@
 
   # LazyVim bootstrap — downloads everything on first launch
   home.file.".config/nvim/init.lua".text = ''
-    -- nixeko/nvim — LazyVim
+    -- LazyVim
     -- First launch installs plugins via lazy.nvim (internet required).
 
     -- Bootstrap lazy.nvim

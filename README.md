@@ -40,8 +40,8 @@ Fonts         JetBrains Mono Nerd Font
 
 ```bash
 # 1. Clone
-git clone https://github.com/IronDingo/dotfiles ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/IronDingo/nixeko-dotfiles ~/Projects/nixeko-dotfiles
+cd ~/Projects/nixeko-dotfiles
 
 # 2. Tell it who you are
 #    Edit hosts/default/params.nix — takes 30 seconds
@@ -69,12 +69,14 @@ That's it. Reboot and you're in Hyprland.
 {
   dotfiles.username = "yourname";      # your unix username
   dotfiles.hostname = "yourhostname";  # machine hostname
+  dotfiles.gitName  = "Your Name";     # git commit author name
+  dotfiles.gitEmail = "you@example.com";
 
   dotfiles.hasNvidia     = false;      # true for Intel + NVIDIA hybrid
   dotfiles.intelBusId    = "PCI:0:2:0";
   dotfiles.nvidiaBusId   = "PCI:1:0:0";
 
-  dotfiles.hardwareModule = "";        # e.g. "dell-xps-15-9500"
+  dotfiles.hardwareModule = null;      # e.g. "dell-xps-15-9500"
                                        # see: github.com/NixOS/nixos-hardware
 }
 ```
@@ -120,7 +122,7 @@ dotfiles/
 
 ```bash
 # Rebuild after any config change:
-sudo nixos-rebuild switch --flake ~/dotfiles#default
+sudo nixos-rebuild switch --flake ~/Projects/nixeko-dotfiles#default
 
 # Or use the shorthand:
 ./bin/apply

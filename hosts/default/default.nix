@@ -27,7 +27,7 @@ let u = config.dotfiles.username; in
   users.users.${u} = {
     isNormalUser = true;
     description  = u;
-    extraGroups  = [ "wheel" "docker" "video" "audio" "networkmanager" "libvirtd" ];
+    extraGroups  = [ "wheel" "docker" "video" "audio" "networkmanager" "libvirtd" "kvm" "dialout" ];
     shell        = pkgs.bash;
   };
 

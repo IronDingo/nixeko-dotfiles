@@ -43,9 +43,15 @@
 
   # Sudo hardening
   security.sudo = {
-    enable = true;
+    enable           = true;
     wheelNeedsPassword = true;
-    execWheelOnly = true;
+    execWheelOnly    = true;
+    # Allow wheel users to start/stop OpenVPN services without a password.
+    # Required for vpn-menu to work from a GUI context (no terminal for password prompts).
+    extraConfig = ''
+      %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/systemctl start openvpn-*
+      %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/systemctl stop openvpn-*
+    '';
   };
 
   # Faillock — slow down brute force, no account lockout

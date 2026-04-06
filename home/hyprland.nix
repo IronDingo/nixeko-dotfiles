@@ -12,9 +12,11 @@
         "waybar"
         "mako"
         "hypridle"
-        # Wallpaper: managed by Stylix (hyprpaper). No swaybg needed.
-        # Tailscale: managed by systemd service. No exec-once needed.
-        # gnome-keyring: managed by PAM via services.gnome.gnome-keyring. No exec-once needed.
+        # Polkit agent — required for GUI auth prompts (power menu, sudo in scripts)
+        "/run/current-system/sw/libexec/polkit-gnome-authentication-agent-1"
+        # Wallpaper: Stylix manages hyprpaper. No swaybg needed.
+        # Tailscale: systemd service. No exec-once needed.
+        # gnome-keyring: PAM via services.gnome.gnome-keyring. No exec-once needed.
       ];
 
       input = {
@@ -83,7 +85,7 @@
 
         # Local services
         "$mod SHIFT, S,         exec, firefox --new-window http://localhost:8888"
-        "$mod SHIFT, H,         exec, firefox --new-window http://192.168.1.107"
+        # "$mod SHIFT, H,      exec, firefox --new-window http://192.168.1.107"  # set your LAN address
 
         # Screenshot
         "$mod SHIFT ALT, S,     exec, grim -g \"$(slurp)\" | satty -f -"

@@ -65,7 +65,7 @@
       # ── Bookmarks toolbar ─────────────────────────────────────────────────────
       bookmarks = [
         {
-          name = "nixeko";
+          name = "bookmarks";
           toolbar = true;
           bookmarks = [
             { name = "SearXNG";          url = "http://localhost:8888"; }

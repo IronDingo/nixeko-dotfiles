@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# pihole-menu — Pi-hole docker compose controller via walker
+# pihole-menu — Pi-hole + SearXNG docker compose controller via walker
+# Set DOCKER_DIR env var to override the default location.
 
-PIHOLE_DIR="$HOME/Projects/nixeko-dotfiles/docker/pihole"
-SEARXNG_DIR="$HOME/Projects/nixeko-dotfiles/docker/searxng"
+DOCKER_DIR="${DOCKER_DIR:-$HOME/docker}"
+PIHOLE_DIR="$DOCKER_DIR/pihole"
+SEARXNG_DIR="$DOCKER_DIR/searxng"
 
 is_running() {
   docker ps --format '{{.Names}}' 2>/dev/null | grep -q "^pihole$"

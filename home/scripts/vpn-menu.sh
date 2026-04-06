@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # vpn-menu — OpenVPN selector via walker
-# Uses systemd services auto-loaded from vpn/configs/*.ovpn by vpn.nix
-# See vpn/README.md for setup instructions
+# Uses systemd services loaded from .ovpn files by modules/system/vpn.nix
+# See vpn/README.md for setup instructions.
 
 WALKER_CMD="walker --dmenu"
 
-# Get all available openvpn services
 get_all_services() {
   systemctl list-units --type=service --all --no-legend 2>/dev/null \
     | awk '{print $1}' \
@@ -14,7 +13,6 @@ get_all_services() {
     | sort
 }
 
-# Get currently active VPN (if any)
 get_active() {
   systemctl list-units --type=service --state=active --no-legend 2>/dev/null \
     | awk '{print $1}' \
@@ -23,7 +21,6 @@ get_active() {
     | head -1
 }
 
-# Friendly display name
 display_name() {
   echo "$1" | sed 's/^openvpn-//' | tr '-' ' ' | tr '[:lower:]' '[:upper:]'
 }
@@ -32,11 +29,10 @@ ACTIVE=$(get_active)
 ALL_SERVICES=$(get_all_services)
 
 if [ -z "$ALL_SERVICES" ]; then
-  notify-send "VPN" "No VPN configs found.\nSee ~/Projects/nixeko-dotfiles/vpn/README.md"
+  notify-send "VPN" "No VPN configs found."$'\n'"See vpn/README.md in your dotfiles."
   exit 1
 fi
 
-# Build menu
 MENU_ITEMS=""
 
 if [ -n "$ACTIVE" ]; then
@@ -53,7 +49,6 @@ SELECTED=$(echo -e "$MENU_ITEMS" | $WALKER_CMD -p "VPN")
 
 [ -z "$SELECTED" ] && exit 0
 
-# Handle stop
 if [[ "$SELECTED" == Stop* ]]; then
   sudo systemctl stop "$ACTIVE"
   sleep 1
@@ -61,19 +56,15 @@ if [[ "$SELECTED" == Stop* ]]; then
   exit 0
 fi
 
-# Extract service name from "display|service" format
-if [[ "$SELECTED" == *"|"* ]]; then
-  SVC="${SELECTED##*|}"
-else
-  exit 0
-fi
+# Separator selected — do nothing
+[[ "$SELECTED" != *"|"* ]] && exit 0
 
-# Stop existing VPN first
+SVC="${SELECTED##*|}"
+
 if [ -n "$ACTIVE" ] && [ "$ACTIVE" != "$SVC" ]; then
   sudo systemctl stop "$ACTIVE"
 fi
 
-# Connect
 notify-send "VPN" "Connecting to $(display_name "$SVC")..."
 if sudo systemctl start "$SVC"; then
   sleep 2

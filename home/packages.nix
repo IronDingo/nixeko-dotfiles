@@ -65,7 +65,6 @@
     mako
     slurp
     swayosd
-    swaybg
     wl-clipboard
     wl-clip-persist
 
@@ -86,10 +85,6 @@
 
     # Productivity
     typora
-
-    # Fonts
-    noto-fonts
-    noto-fonts-emoji
 
     # System tools
     brightnessctl
