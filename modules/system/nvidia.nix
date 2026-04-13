@@ -1,11 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 # Intel + NVIDIA hybrid (Optimus / PRIME offload)
 # Intel iGPU drives the display. NVIDIA handles heavy workloads on demand.
 # Bus IDs come from dotfiles.intelBusId / dotfiles.nvidiaBusId in hosts/default/params.nix
 # Run GPU-intensive apps with: nvidia-offload <app>
 
-{
+lib.mkIf config.dotfiles.hasNvidia {
   hardware.graphics = {
     enable      = true;
     enable32Bit = true;

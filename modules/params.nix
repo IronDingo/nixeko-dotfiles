@@ -34,12 +34,6 @@
       description = "NVIDIA dGPU PCI bus ID for PRIME offload";
     };
 
-    hardwareModule = lib.mkOption {
-      type        = lib.types.nullOr lib.types.str;
-      default     = null;
-      description = "nixos-hardware module name, or null for none";
-    };
-
     gitName = lib.mkOption {
       type        = lib.types.str;
       description = "Git commit author name";

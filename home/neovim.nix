@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 # Neovim — LazyVim powered
 # Plugins are downloaded by lazy.nvim on first launch (needs internet).

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 # Waybar — top bar for Hyprland
 # Colors are injected automatically by Stylix.

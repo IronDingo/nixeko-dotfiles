@@ -1,14 +1,12 @@
-{ config, lib, pkgs, nixos-hardware, ... }:
+{ config, lib, pkgs, ... }:
 
 let u = config.dotfiles.username; in
 
 {
   imports = [
     ./hardware-configuration.nix
-  ] ++ lib.optional (config.dotfiles.hardwareModule != null)
-        nixos-hardware.nixosModules.${config.dotfiles.hardwareModule}
-    ++ lib.optional config.dotfiles.hasNvidia
-        ../../modules/system/nvidia.nix;
+    ../../modules/system/nvidia.nix
+  ];
 
   boot.loader = {
     systemd-boot.enable     = true;

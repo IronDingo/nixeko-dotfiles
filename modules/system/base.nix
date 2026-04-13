@@ -76,4 +76,7 @@
 
   # zram swap
   zramSwap.enable = true;
+
+  # OpenVPN — services configured post-install (see vpn/README.md)
+  environment.systemPackages = [ pkgs.openvpn ];
 }

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Cronie (cron jobs)
@@ -6,26 +6,16 @@
 
   # Locate (plocate)
   services.locate = {
-    enable = true;
-    package = pkgs.plocate;
+    enable    = true;
+    package   = pkgs.plocate;
     localuser = null;
   };
 
-  # CUPS printing
+  # CUPS — auto-discovers network printers via Avahi
+  services.printing.enable = true;
   services.avahi = {
-    enable = true;
-    nssmdns4 = true;
+    enable      = true;
+    nssmdns4    = true;
     openFirewall = true;
   };
-
-  # noip dynamic DNS — run as a service
-  # systemd.services.noip = {
-  #   description = "No-IP Dynamic DNS Updater";
-  #   after = [ "network.target" ];
-  #   wantedBy = [ "multi-user.target" ];
-  #   serviceConfig = {
-  #     ExecStart = "${pkgs.noip}/bin/noip2 -c /etc/noip2.conf";
-  #     Restart = "always";
-  #   };
-  # };
 }

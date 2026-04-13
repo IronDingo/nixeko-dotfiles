@@ -15,7 +15,4 @@
   dotfiles.intelBusId  = "PCI:0:2:0";
   dotfiles.nvidiaBusId = "PCI:1:0:0";
 
-  # nixos-hardware module (github.com/NixOS/nixos-hardware)
-  # Example: "dell-xps-15-9500" — set to null if none applies
-  dotfiles.hardwareModule = null;
 }

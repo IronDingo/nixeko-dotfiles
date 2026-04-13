@@ -2,18 +2,15 @@
   description = "dotfiles — NixOS + home-manager configuration";
 
   inputs = {
-    nixpkgs.url        = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager       = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
-    nixos-hardware.url = "github:nixos/nixos-hardware";
-    stylix.url         = "github:danth/stylix";
+    nixpkgs.url   = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager  = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
+    stylix.url    = "github:danth/stylix";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-hardware, stylix, ... }:
+  outputs = { self, nixpkgs, home-manager, stylix, ... }:
   let
     system = "x86_64-linux";
 
-    # homeFor wires a home-manager config into the NixOS module system.
-    # username flows in from config.dotfiles.username — no hardcoded strings.
     homeFor = file: { config, ... }: {
       home-manager.useGlobalPkgs    = true;
       home-manager.useUserPackages  = true;
@@ -29,15 +26,12 @@
       ./modules/system/security.nix
       ./modules/system/networking.nix
       ./modules/system/services.nix
-      ./modules/system/printing.nix
-      ./modules/system/vpn.nix
       home-manager.nixosModules.home-manager
     ];
 
     mkHost = modules: nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit nixos-hardware; };
-      modules     = shared ++ modules;
+      modules = shared ++ modules;
     };
   in
   {
