@@ -6,9 +6,8 @@
 
   # Locate (plocate)
   services.locate = {
-    enable    = true;
-    package   = pkgs.plocate;
-    localuser = null;
+    enable  = true;
+    package = pkgs.plocate;
   };
 
   # CUPS — auto-discovers network printers via Avahi

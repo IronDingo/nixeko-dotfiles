@@ -12,12 +12,14 @@
   # DNSOverTLS=opportunistic falls back gracefully on captive portals.
   # To route through Pi-hole after install: prepend DNS=127.0.0.1 to extraConfig.
   services.resolved = {
-    enable  = true;
-    dnssec  = "allow-downgrade";
-    domains = [ "~." ];
-    extraConfig = ''
-      DNS=1.1.1.1#cloudflare-dns.com 9.9.9.9#dns.quad9.net
-      DNSOverTLS=opportunistic
-    '';
+    enable   = true;
+    dnssec   = "allow-downgrade";
+    domains  = [ "~." ];
+    settings = {
+      Resolve = {
+        DNS       = "1.1.1.1#cloudflare-dns.com 9.9.9.9#dns.quad9.net";
+        DNSOverTLS = "opportunistic";
+      };
+    };
   };
 }
