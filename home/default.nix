@@ -14,9 +14,9 @@
     ./mime.nix
   ];
 
-  home.username              = username;
-  home.homeDirectory         = "/home/${username}";
-  home.stateVersion          = "24.11";
-  home.backupFileExtension     = "bak";
+  home.username            = username;
+  home.homeDirectory       = "/home/${username}";
+  home.stateVersion        = "24.11";
+  home.backupFileExtension = "bak";
   programs.home-manager.enable = true;
 }

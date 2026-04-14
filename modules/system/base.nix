@@ -1,17 +1,15 @@
-{ config, pkgs, ... }:
+{ username, pkgs, ... }:
 
 {
-  # Pipewire audio
   services.pipewire = {
-    enable = true;
-    alsa.enable = true;
+    enable            = true;
+    alsa.enable       = true;
     alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
+    pulse.enable      = true;
+    jack.enable       = true;
   };
-  security.rtkit.enable = true; # needed for pipewire realtime priority
+  security.rtkit.enable = true;
 
-  # Fonts
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.cascadia-code
@@ -21,62 +19,41 @@
     noto-fonts-emoji
   ];
 
-  # XDG portals — GTK portal base; Hyprland portal added in hosts/default/default.nix
   xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    enable       = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
-  # Polkit for GUI auth prompts
-  security.polkit.enable = true;
-
-  # Power management
+  security.polkit.enable           = true;
   services.power-profiles-daemon.enable = true;
+  services.fwupd.enable            = true;
 
-  # Firmware updates
-  services.fwupd.enable = true;
-
-  # Bluetooth
   hardware.bluetooth = {
-    enable = true;
+    enable      = true;
     powerOnBoot = true;
   };
   services.blueman.enable = true;
 
-  # GNOME keyring for secret storage
   services.gnome.gnome-keyring.enable = true;
 
-  # Docker
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = false; # start on demand
-  };
+  virtualisation.docker.enable        = true;
+  virtualisation.docker.enableOnBoot  = false;
+  virtualisation.libvirtd.enable      = true;
+  programs.virt-manager.enable        = true;
 
-  # libvirt / QEMU / virt-manager
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-
-  # Syncthing
   services.syncthing = {
-    enable    = true;
-    user      = config.dotfiles.username;
-    dataDir   = "/home/${config.dotfiles.username}/Syncthing-Master";
-    configDir = "/home/${config.dotfiles.username}/.config/syncthing";
+    enable           = true;
+    user             = username;
+    dataDir          = "/home/${username}/Syncthing-Master";
+    configDir        = "/home/${username}/.config/syncthing";
     openDefaultPorts = true;
   };
 
-  # Tailscale
   services.tailscale.enable = true;
-
-  # Flatpak (for LibreWolf and other flatpaks)
-  services.flatpak.enable = true;
-
-  # Timezone auto-update
+  services.flatpak.enable   = true;
   services.automatic-timezoned.enable = true;
 
-  # zram swap
-  zramSwap.enable = true;
-
-  # OpenVPN — services configured post-install (see vpn/README.md)
   environment.systemPackages = [ pkgs.openvpn ];
+
+  zramSwap.enable = true;
 }

@@ -1,17 +1,13 @@
-{ config, pkgs, lib, ... }:
+{ lib, config, pkgs, hasNvidia, intelBusId, nvidiaBusId, ... }:
 
-# Intel + NVIDIA hybrid (Optimus / PRIME offload)
-# Intel iGPU drives the display. NVIDIA handles heavy workloads on demand.
-# Bus IDs come from dotfiles.intelBusId / dotfiles.nvidiaBusId in hosts/default/params.nix
-# Run GPU-intensive apps with: nvidia-offload <app>
+lib.mkIf hasNvidia {
 
-lib.mkIf config.dotfiles.hasNvidia {
   hardware.graphics = {
     enable      = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
       intel-media-driver
-      intel-vaapi-driver  # replaces deprecated vaapiIntel
+      intel-vaapi-driver
       vaapiVdpau
       libvdpau-va-gl
     ];
@@ -22,18 +18,17 @@ lib.mkIf config.dotfiles.hasNvidia {
   hardware.nvidia = {
     modesetting.enable          = true;
     powerManagement.enable      = true;
-    powerManagement.finegrained = true; # fine-grained for laptop battery
-    open                        = true; # RTX 4060+ supports open kernel module
+    powerManagement.finegrained = true;
+    open                        = true;
     nvidiaSettings              = true;
     package                     = config.boot.kernelPackages.nvidiaPackages.stable;
 
     prime = {
-      offload = {
-        enable           = true;
-        enableOffloadCmd = true; # gives you `nvidia-offload` command
-      };
-      intelBusId  = config.dotfiles.intelBusId;
-      nvidiaBusId = config.dotfiles.nvidiaBusId;
+      offload.enable           = true;
+      offload.enableOffloadCmd = true;
+      intelBusId               = intelBusId;
+      nvidiaBusId              = nvidiaBusId;
     };
   };
+
 }

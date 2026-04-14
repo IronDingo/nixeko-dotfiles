@@ -1,30 +1,17 @@
-{ config, lib, pkgs, ... }:
-
-let u = config.dotfiles.username; in
+{ username, hostname, pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ../../modules/system/nvidia.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
-  boot.loader = {
-    systemd-boot.enable     = true;
-    efi.canTouchEfiVariables = true;
-  };
+  boot.loader.systemd-boot.enable      = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages                  = pkgs.linuxPackages_latest;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  networking.hostName = hostname;
+  i18n.defaultLocale  = "en_US.UTF-8";
 
-  networking.hostName = config.dotfiles.hostname;
-
-  # Timezone set automatically by automatic-timezoned (geolocation).
-  # To pin a timezone instead: disable services.automatic-timezoned in base.nix
-  # and uncomment: time.timeZone = "Europe/London";
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  users.users.${u} = {
+  users.users.${username} = {
     isNormalUser = true;
-    description  = u;
     extraGroups  = [ "wheel" "docker" "video" "audio" "networkmanager" "libvirtd" "kvm" "dialout" ];
     shell        = pkgs.bash;
   };
@@ -41,27 +28,25 @@ let u = config.dotfiles.username; in
   programs._1password.enable = true;
   programs._1password-gui = {
     enable             = true;
-    polkitPolicyOwners = [ u ];
+    polkitPolicyOwners = [ username ];
   };
 
   programs.steam = {
     enable                  = true;
-    remotePlay.openFirewall  = true;
-    gamescopeSession.enable  = true;
+    remotePlay.openFirewall = true;
+    gamescopeSession.enable = true;
   };
 
   programs.gamemode.enable = true;
 
-  nix = {
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store   = true;
-    };
-    gc = {
-      automatic = true;
-      dates     = "weekly";
-      options   = "--delete-older-than 30d";
-    };
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    auto-optimise-store   = true;
+  };
+  nix.gc = {
+    automatic = true;
+    dates     = "weekly";
+    options   = "--delete-older-than 30d";
   };
 
   system.stateVersion = "24.11";
