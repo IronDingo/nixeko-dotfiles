@@ -11,10 +11,10 @@
   outputs = { self, nixpkgs, home-manager, stylix, ... }:
   let
     # ── Edit these before installing ────────────────────────────────────────────
-    username    = "yourname";
-    hostname    = "yourhostname";
-    gitName     = "Your Name";
-    gitEmail    = "you@example.com";
+    username    = "eko";
+    hostname    = "nixos";
+    gitName     = "eko";
+    gitEmail    = "alexanderkoydl@outlook.com";
     hasNvidia   = false;
     intelBusId  = "PCI:0:2:0";  # lspci | grep -E "VGA|3D" → convert 00:02.0 to PCI:0:2:0
     nvidiaBusId = "PCI:1:0:0";
