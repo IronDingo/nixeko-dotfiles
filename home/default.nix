@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ username, ... }:
 
 {
   imports = [
@@ -17,7 +17,6 @@
   home.username              = username;
   home.homeDirectory         = "/home/${username}";
   home.stateVersion          = "24.11";
-  home.backupFileExtension   = "bak";
-  nixpkgs.config.allowUnfree = true;
+  home.backupFileExtension     = "bak";
   programs.home-manager.enable = true;
 }
