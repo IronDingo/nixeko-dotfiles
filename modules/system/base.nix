@@ -26,9 +26,8 @@
     enable      = true;
     powerOnBoot = true;
   };
-  # blueman omitted — GNOME manages Bluetooth
 
-  services.gnome.gnome-keyring.enable = true; # needed for Hyprland session too
+  services.gnome.gnome-keyring.enable = true;
 
   virtualisation.docker.enable        = true;
   virtualisation.docker.enableOnBoot  = false;

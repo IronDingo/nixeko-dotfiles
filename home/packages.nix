@@ -1,9 +1,5 @@
 { pkgs, ... }:
 
-# Packages managed by home-manager.
-# Note: alacritty, neovim, waybar, git, starship, fzf, zoxide are
-# managed via programs.* in their own modules — not listed here.
-
 {
   home.packages = with pkgs; [
 
@@ -41,7 +37,6 @@
     docker-compose
 
     # Networking
-    # openvpn installed at system level (modules/system/vpn.nix)
     tcpdump
     wget
     whois
@@ -67,6 +62,8 @@
     swayosd
     wl-clipboard
     wl-clip-persist
+    wayfreeze
+    wiremix
 
     # GUI apps
     evince
@@ -102,9 +99,6 @@
     # Launcher
     walker
 
-    # AI / editors
-    # cursor  # uncomment if available in nixpkgs
-
     # Remote desktop
     rustdesk
 
@@ -117,15 +111,7 @@
     # Screenshot
     satty
 
-    # Screen recording (verify on first build — may need overlay)
+    # Screen recording
     gpu-screen-recorder
-    # gpu-screen-recorder-gtk  # separate GTK frontend, unconfirmed in nixpkgs
-
-    # WiFi TUI (unconfirmed nixpkgs name — comment out if build fails)
-    # impala
-
-    # Wayland extras (confirmed in nixpkgs unstable)
-    wayfreeze
-    wiremix
   ];
 }

@@ -91,8 +91,6 @@
         "$mod SHIFT ALT, S,     exec, grim -g \"$(slurp)\" | satty -f -"
 
         # Menus
-        "$mod SHIFT CTRL, V,    exec, bash ~/.local/bin/vpn-menu"
-        "$mod SHIFT CTRL, P,    exec, bash ~/.local/bin/pihole-menu"
         "$mod SHIFT CTRL, Q,    exec, bash ~/.local/bin/power-menu"
 
         # Window management

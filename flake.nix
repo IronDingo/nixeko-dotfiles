@@ -15,7 +15,7 @@
     hostname    = "nixos";
     gitName     = "eko";
     gitEmail    = "alexanderkoydl@outlook.com";
-    hasNvidia   = false;
+    hasNvidia   = true;
     intelBusId  = "PCI:0:2:0";  # lspci | grep -E "VGA|3D" → convert 00:02.0 to PCI:0:2:0
     nvidiaBusId = "PCI:1:0:0";
     # ────────────────────────────────────────────────────────────────────────────

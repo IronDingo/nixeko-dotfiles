@@ -1,9 +1,6 @@
 { pkgs, username, gitName, gitEmail, ... }:
 
 {
-  # ── Git ───────────────────────────────────────────────────────────────────────
-  # Set dotfiles.gitName and dotfiles.gitEmail in hosts/default/params.nix
-
   programs.git = {
     enable    = true;
     userName  = gitName;
