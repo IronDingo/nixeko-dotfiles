@@ -1,4 +1,4 @@
-{ config, pkgs, username, ... }:
+{ pkgs, username, ... }:
 
 {
   imports = [
@@ -14,9 +14,10 @@
     ./mime.nix
   ];
 
-  home.username      = username;
-  home.homeDirectory = "/home/${username}";
-  home.stateVersion  = "24.11";
+  home.username              = username;
+  home.homeDirectory         = "/home/${username}";
+  home.stateVersion          = "24.11";
+  home.backupFileExtension   = "bak";
   nixpkgs.config.allowUnfree = true;
   programs.home-manager.enable = true;
 }
