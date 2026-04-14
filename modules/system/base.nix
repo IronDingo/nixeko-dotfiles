@@ -19,11 +19,6 @@
     noto-fonts-emoji
   ];
 
-  xdg.portal = {
-    enable       = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
-
   security.polkit.enable           = true;
   services.power-profiles-daemon.enable = true;
   services.fwupd.enable            = true;
