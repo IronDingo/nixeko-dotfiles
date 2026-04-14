@@ -19,17 +19,16 @@
     noto-fonts-emoji
   ];
 
-  security.polkit.enable           = true;
-  services.power-profiles-daemon.enable = true;
-  services.fwupd.enable            = true;
+  security.polkit.enable = true;
+  services.fwupd.enable  = true;
 
   hardware.bluetooth = {
     enable      = true;
     powerOnBoot = true;
   };
-  services.blueman.enable = true;
+  # blueman omitted — GNOME manages Bluetooth
 
-  services.gnome.gnome-keyring.enable = true;
+  services.gnome.gnome-keyring.enable = true; # needed for Hyprland session too
 
   virtualisation.docker.enable        = true;
   virtualisation.docker.enableOnBoot  = false;

@@ -18,6 +18,11 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  # Display manager — GDM with Hyprland as default, GNOME as fallback
+  services.displayManager.gdm.enable         = true;
+  services.displayManager.defaultSession     = "hyprland";
+  services.xserver.desktopManager.gnome.enable = true;
+
   programs.hyprland = {
     enable          = true;
     xwayland.enable = true;
