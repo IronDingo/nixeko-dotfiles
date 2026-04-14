@@ -1,73 +1,58 @@
-{ config, lib, ... }:
+{ ... }:
 
 {
   # Kernel hardening
   boot.kernel.sysctl = {
-    # Network hardening
-    "net.ipv4.conf.all.rp_filter" = 1;
-    "net.ipv4.conf.default.rp_filter" = 1;
-    "net.ipv4.conf.all.accept_redirects" = 0;
+    "net.ipv4.conf.all.rp_filter"         = 1;
+    "net.ipv4.conf.default.rp_filter"     = 1;
+    "net.ipv4.conf.all.accept_redirects"  = 0;
     "net.ipv4.conf.default.accept_redirects" = 0;
-    "net.ipv4.conf.all.secure_redirects" = 0;
+    "net.ipv4.conf.all.secure_redirects"  = 0;
     "net.ipv4.conf.default.secure_redirects" = 0;
-    "net.ipv6.conf.all.accept_redirects" = 0;
+    "net.ipv6.conf.all.accept_redirects"  = 0;
     "net.ipv6.conf.default.accept_redirects" = 0;
-    "net.ipv4.conf.all.send_redirects" = 0;
+    "net.ipv4.conf.all.send_redirects"    = 0;
     "net.ipv4.conf.default.send_redirects" = 0;
     "net.ipv4.icmp_echo_ignore_broadcasts" = 1;
-    "net.ipv4.tcp_syncookies" = 1;
-
-    # Kernel hardening
-    "kernel.dmesg_restrict" = 1;
-    "kernel.kptr_restrict" = 2;
-    "kernel.unprivileged_bpf_disabled" = 1;
-    "net.core.bpf_jit_harden" = 2;
-    "kernel.yama.ptrace_scope" = 1;
-
-    # Disable magic SysRq
-    "kernel.sysrq" = 0;
+    "net.ipv4.tcp_syncookies"             = 1;
+    "kernel.dmesg_restrict"               = 1;
+    "kernel.kptr_restrict"                = 2;
+    "kernel.unprivileged_bpf_disabled"    = 1;
+    "net.core.bpf_jit_harden"            = 2;
+    "kernel.yama.ptrace_scope"            = 1;
+    "kernel.sysrq"                        = 0;
   };
 
-  # Firewall
   networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 22000 ]; # syncthing
+    enable          = true;
+    allowedTCPPorts = [ 22000 ];       # syncthing
     allowedUDPPorts = [ 22000 21027 ]; # syncthing
   };
 
-  # AppArmor
   security.apparmor = {
-    enable = true;
+    enable                    = true;
     killUnconfinedConfinables = false;
   };
 
-  # Sudo hardening
   security.sudo = {
-    enable           = true;
+    enable             = true;
     wheelNeedsPassword = true;
-    execWheelOnly    = true;
-    # Allow wheel users to start/stop OpenVPN services without a password.
-    # Required for vpn-menu to work from a GUI context (no terminal for password prompts).
-    extraConfig = ''
+    execWheelOnly      = true;
+    extraConfig        = ''
       %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/systemctl start openvpn-*
       %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/systemctl stop openvpn-*
     '';
   };
 
-  # Faillock — slow down brute force, no account lockout
   security.pam.services.login.failDelay = { enable = true; delay = 3000000; };
+  security.pam.services.sudo.failDelay  = { enable = true; delay = 3000000; };
 
-  # Don't lock account after failed attempts (avoids the issue you had)
-  security.pam.services.sudo.failDelay = { enable = true; delay = 3000000; };
-
-  # SSH — secure defaults. Hosts that need SSH (e.g. beacon) set enable = true.
   services.openssh = {
-    enable = lib.mkDefault false;
+    enable   = false;
     settings = {
-      PasswordAuthentication = lib.mkDefault false;
-      PermitRootLogin = lib.mkDefault "no";
-      X11Forwarding = lib.mkDefault false;
+      PasswordAuthentication = false;
+      PermitRootLogin        = "no";
+      X11Forwarding          = false;
     };
   };
-
 }
